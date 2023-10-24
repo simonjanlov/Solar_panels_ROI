@@ -1,0 +1,14 @@
+
+1
+calculate the generated electricity per year based on:
+
+Installerad effekt x (taklutning och takriktning) x solinstrålning x effektförluster x minskad effekt = Årlig elproduktion
+
+for example: 
+
+10 000 * (taklutning och takriktning) (default=1.0) * 1000 * effektförluster (default=0.9) * minskad_effekt (default=0.9) = y
+
+2
+based on the cost of the system, generate total "balance" per year as x with year as y
+
+should it plot a predefined number of years?
