@@ -9,11 +9,11 @@ import numpy as np
 # Load the data
 data = pd.read_csv("final_project\data\elpriser_sverige96-23.csv")  
 
-# List of columns to increase by 25% (skatt)
-columns_to_increase = ['Lägenhet', 'Villa utan elvärme', 'Villa med elvärme', 'Större hushåll', 'Näringsverksamhet', 'Småindustri']
+# # List of columns to increase by 25% (skatt)
+# columns_to_increase = ['Lägenhet', 'Villa utan elvärme', 'Villa med elvärme', 'Större hushåll', 'Näringsverksamhet', 'Småindustri']
 
-# Add 25% to the specified columns
-data[columns_to_increase] = data[columns_to_increase] * 1.25
+# # Add 25% to the specified columns
+# data[columns_to_increase] = data[columns_to_increase] * 1.25
 
 # Select the columns of interest
 data = data[["Year", "Villa utan elvärme"]]
