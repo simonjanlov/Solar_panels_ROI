@@ -1,0 +1,79 @@
+Dag 1 231023 Måndag:
+
+Bestämt oss för följande frågeställning:
+
+"Based on the geographical location within Sweden (Lund, Stockholm, Östersund, Luleå), how long does it take to breakeven on your investment of installing solar panels as a private house owner. We will use a set of 25 panels that is sold by IKEA. We will use a simplified calculation to calculate the sun conditions".
+
+
+Detta var ett förslag till frågeställning som vi inte landade i: 
+
+Letting a user input their electicity need for a given time. Based on their geographical location, calculate how many solar cells they are going to need. Then calculate the cost of the investment. Then calculate how long it will take to get the investment returned. 
+
+--- --- ---
+
+Vi har hittat data på SMHI för gobalstrålning (insolation) som vi kan använda oss av. Vi har hittat ett möjligt sätt att kalkylera elgenerering utifrån insolation. Ska kolla om den kalkylen är ok att köra på, även om den såklart är förenklad. Henry har mailat en expert.
+
+--- --- ---
+
+
+25 st är en normal mängd (50 kvm takyta hos IKEA)
+
+IKEAs set om 25 paneler = 10,3 kWp
+
+enligt elskling.se genererar ett system på 10,3 kWp i Sverige mellan 8 320 – 11 440 kWh per år
+
+
+Today:
+
+Luleå 9500 * 0.43 = 4085
+Östersund 9500 * 0.43 = 4085
+Stockholm 9500 * 0.96 (elpriset idag i Stockholm) = 9120
+Lund 9500 * 1.23 = 11685
+
+
+Sthlm: 131 000 (efter grönt avdrag) / 9120 = 14,4 (år till breakeven)
+
+
+
+Har en solcellsanläggning 10 kW i toppeffekt blir nämligen solelproduktionen under en timmes optimala förhållanden 10 kW x 1h = 10 kWh
+
+
+0.96 kr / kWh (stockholm)
+
+sum electricity cost per year = 19.000
+
+
+
+
+20.000 kWh per år för en villa totalt
+
+
+what will be the cost of buying and installing?
+
+
+price of solar panel
+
+other aspects: (government grant?, )
+
+
+--- --- --- 
+
+CHAT GPT's förslag till uträkning:
+
+För att räkna ut solcellers produktion per soltimme behöver du ta hänsyn till flera faktorer, inklusive din geografiska plats och solcellernas kapacitet. Här är en förenklad metod för att uppskatta detta:
+
+Hitta den genomsnittliga årliga solinstrålningen: För att veta var i Sverige det är mest soltimmar, börja med att hitta data om den genomsnittliga årliga solinstrålningen för olika platser. Solinstrålning mäts i kWh per kvadratmeter per år. Du kan hitta denna information från olika källor, inklusive meteorologiska myndigheter eller energiföretag.
+Bestäm solcellens kapacitet: Solceller har en märkspecifik effekt, som mäts i wattpeak (Wp). Detta värde beskriver solcellens kapacitet vid standardtestförhållanden. Du kan hitta detta värde i specifikationerna för dina solceller.
+Beräkna den förväntade produktionen per soltimme: För att beräkna den förväntade produktionen per soltimme, kan du använda följande formel:
+Produktion per soltimme (kWh) = Årlig solinstrålning (kWh/m²/år) * Solcellens kapacitet (kW) / 1000
+Upprepa detta för olika platser: Upprepa beräkningen för olika platser i Sverige för att jämföra vilken plats som ger bäst produktion per soltimme.
+
+När du har dessa siffror kan du avgöra var det kan vara mest lönsamt att investera i solceller. Platser med hög solinstrålning och en hög andel soltimmar per år är generellt sett de bästa platserna för solcellsanläggningar.
+
+Kom ihåg att detta är en förenklad beräkningsmetod. I praktiken finns det fler faktorer att beakta, inklusive installationens orientering, lutning, skuggning och temperatur, som alla kan påverka solcellernas prestanda. Det kan vara klokt att konsultera med experter eller använda solsimuleringsverktyg för att få mer exakta uppskattningar.
+
+
+
+
+
+
