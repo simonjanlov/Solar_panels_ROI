@@ -3,6 +3,7 @@ import plotly.express as px
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
+from dash.dependencies import Input, Output
 
 
 
@@ -23,31 +24,28 @@ n_df.rename(
 app = Dash(__name__)
 
 fig = px.bar(n_df, x='Hours', y='No of Calls', title='Return of Investment',color='Hours')
-fig_map = go.Figure(go.Scattermapbox(
-    lat=[63.0, 65.0, 65.0, 63.0, 63.0],  # Latitude-koordinater för Sveriges gränser
-    lon=[11.0, 11.0, 15.0, 15.0, 11.0],  # Longitud-koordinater för Sveriges gränser
-    mode="lines",
-    line=dict(color="blue"),
-))
+# fig_map = px.choropleth_mapbox(
+#     geojson=px.data.gapminder().query("country == 'Sweden'"),
+#     locations="country",
+#     color="country",
+#     featureidkey="properties.name",
+#     mapbox_style="carto-positron",
+# )
 
 
-fig_map.update_layout(
-    mapbox=dict(
-        center={"lat": 64.0, "lon": 13.0},
-        style="open-street-map",
-        zoom=4
-    ),
-)
+
 
 app.layout = html.Div([
     html.Div([
         html.Div([
             html.Label('Välj en stad i din elzon'),
             dcc.Dropdown(
+                id='city-dropdown',
                 options=['Malmö', 'Stockholm', 'Sundsvall', 'Luleå'],
                 value='Luleå',
                 style={'width': '200px', 'font-size': '18px', 'margin-right': '20px'}
-            )
+            ),
+            html.Div(id='output')
         ]),
         html.Div([
             html.Label('Välj det paket som passa ditt tak'),
@@ -71,7 +69,7 @@ app.layout = html.Div([
                 options=['West', 'South West', 'South', 'South East', 'East'],
                 value='West',
                 style={'width': '200px', 'font-size': '18px', 'margin-right': '20px'}
-            )
+            ),
         ])
     ], style={'display': 'flex'}),
     html.Div([
@@ -80,12 +78,18 @@ app.layout = html.Div([
             figure=fig,
             style={'width': '1000px', 'height': '600px'}
         ),
-        dcc.Graph(figure=fig_map, style={'width': '50%', 'display': 'inline-block'})
+        # dcc.Graph(figure=fig_map, style={'width': '50%', 'display': 'inline-block'})
     ],style={'display':'flex'})
 ])
 
         
-
+@app.callback(
+    Output('output', 'children'),
+    [Input('city-dropdown', 'value')]
+)
+def update_output(selected_city):
+    print(f'Du har valt staden: {selected_city}')
+    return f'Du har valt staden: {selected_city}'
 
 
 
