@@ -10,7 +10,7 @@ from find_tilt_and_direction_value import find_tilt_and_direction_value
 # This script allows us to test run the SolarPanelSystem class and its methods with user input
 
 price = int(input("Input system price (SEK): "))
-system_effect = float(input("Input sytstem effect (kWp): "))
+system_effect = float(input("Input system effect (kWp): "))
 insolation = float(input("Input your location's average yearly insolation: "))
 tilt_and_direction = find_tilt_and_direction_value(int(input("Input tilt: ")), input("Input direction: "))
 
