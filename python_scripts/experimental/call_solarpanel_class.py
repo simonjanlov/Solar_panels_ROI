@@ -1,9 +1,12 @@
 import sys
 import pandas as pd
 
-sys.path.append(r'C:\projekt\slutprojekt\final_project\python_scripts')
+sys.path.append(r'python_scripts')
 
 from electricity_output_calc import SolarPanelSystem
+
+
+# This script allows us to test run the SolarPanelSystem class and its methods with user input
 
 price = int(input("Input system price (SEK): "))
 system_effect = float(input("Input sytstem effect (kWp): "))
@@ -18,7 +21,7 @@ mockup_electricity_prices = [1.02, 0.52, 0.49, 1.03, 0.89,
                              0.45, 0.34, 0.66, 0.64, 0.97, 
                              0.39, 0.88, 0.35, 0.8, 0.33]
 
-electricity_prices_df = pd.read_csv(r'C:\projekt\slutprojekt\final_project\data\predicted_prices_withzones.csv')
+electricity_prices_df = pd.read_csv(r'data\predicted_prices_withzones.csv')
 predicted_prices_SE = list(electricity_prices_df['zone1'])
 # print(predicted_prices_SE)
     
