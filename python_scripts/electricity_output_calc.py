@@ -30,7 +30,7 @@ class SolarPanelSystem:
         return self.calc_yearly_electricity_output() * electricity_price_per_kWh
         
 
-    def profitability_over_time(self, list_of_electricity_prices, years=20):
+    def profitability_over_time(self, list_of_electricity_prices, years=30):
         """Takes a list of yearly electricity prices per kWh and outputs a list of total profitability
         per year, adding the negative purchase price as the initial value. Ex. After 0 years the profitability is <purchase price * -1>,
         after 1 year the profitability is <purchase price * -1 + accumulated savings>"""
@@ -53,7 +53,7 @@ class SolarPanelSystem:
             return balance_per_year
 
 
-    def years_until_breakeven(self, list_of_electricity_prices, years=20):
+    def years_until_breakeven(self, list_of_electricity_prices, years=30):
         # we could here create a method of this class that outputs the number of years until breakeven
         # This would only be a bonus feature
         pass
@@ -73,7 +73,7 @@ if __name__=='__main__':
     # print(my_system.calc_yearly_electricity_output())
 
     # print(my_system.electricity_cost_saved_per_year(0.98))
-    print(my_system.profitability_over_time(list_of_electricity_prices[:20]))
+    print(my_system.profitability_over_time(list_of_electricity_prices))
 
     # for i in range(30):
     #     list_of_electricity_prices.append(round(random() * 0.75 + 0.3, 2))
