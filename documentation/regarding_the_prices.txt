@@ -2,10 +2,10 @@
 
 2013 till 2022 nationellt genomsnittligt elpris per år = 64.8
 
-Zon 1 genomsnittlig avvikelse: 58.1 - 64.8 = -6.7
-Zon 2 genomsnittlig avvikelse: 59.2 - 64.8 = -5.6
-Zon 3 genomsnittlig avvikelse: 65.7 - 64.8 = +0.9
-Zon 4 genomsnittlig avvikelse: 76.5 - 64.8 = +11.7
+Zon 1(lulea) genomsnittlig avvikelse: 58.1 - 64.8 = -6.7
+Zon 2(sundsvall)genomsnittlig avvikelse: 59.2 - 64.8 = -5.6
+Zon 3 (stockholm) genomsnittlig avvikelse: 65.7 - 64.8 = +0.9
+Zon 4 (malmö)genomsnittlig avvikelse: 76.5 - 64.8 = +11.7
 
 
 Vi väljer Oviktade priser.
