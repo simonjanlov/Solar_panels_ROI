@@ -12,7 +12,7 @@ load_figure_template("vapor")
 app = Dash(__name__, external_stylesheets=[dbc.themes.VAPOR])
 
 # Load your existing data
-data = pd.read_csv('C://final_project//el_priser_data//testData_month_orig.csv')
+data = pd.read_csv('C:\\Users\\henry\\Documents\\projekt\\Visualization\\CustomerService\\data\\testData_month_orig.csv')
 df = pd.DataFrame(data)
 
 bar_df = df.iloc[0, [5, 6, 7, 8, 9, 10, 11, 12]]
@@ -23,10 +23,10 @@ n_df.rename(
     inplace=True
 )
 # Custom colors for the bar chart
-bar_colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f']
+bar_colors = ['#1f77b4', 'black', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f']
 
 # Load the price prognoses data
-price_prognoses_data = pd.read_csv('C://final_project//el_priser_data//predicted_prices.csv')
+price_prognoses_data = pd.read_csv('C:\\Users\\henry\\Documents\\projekt\\examens_proj\\final_project\\data\\predicted_prices.csv')
 
 prognoses_fig = px.line(price_prognoses_data, x='Year', y='Predicted kWh price', title='Price Prognoses')
 
@@ -43,20 +43,44 @@ city_dropdown = dcc.Dropdown(
 
 package_dropdown = dcc.Dropdown(
     id='package-dropdown',
-    options=['Package 1', 'Package 2', 'Package 3', 'Package 4'],
-    value='Package 1',
+    options=['Package 1 (12 solar panels)', 'Package 2 (25 solar panels)', 'Package 3 (35 solar panels)', 'Package 4 (45 solar panels)'],
+    value='Package 1 (12 solar panels)',
     className='mb-3'  # Apply Bootstrap classes
 )
 
-# Wrap the second graph and both Dropdowns in a dcc.Loading container
-second_graph = dcc.Loading(
-    [
-        dcc.Graph(figure=fig),
-        city_dropdown,
-        package_dropdown,
-        html.Div(id='output')  # Output element to display selected city
-    ]
+angle_dropdown = dcc.Dropdown(
+    id='angle-dropdown',
+    options=['0°', '10°', '20°', '30°', '40°', '50°', '60°', '70°', '80°', '90°'],
+    value='20°',
+    className='mb-3'  # Apply Bootstrap classes
 )
+direction_dropdown = dcc.Dropdown(
+    id='direction-dropdown',
+    options=['West', 'South West', 'South', 'South East', 'East'],
+    value='South West',
+    className='mb-3'  # Apply Bootstrap classes
+)
+
+
+
+dropdown_frame = html.Div([    
+    html.Label("Select City"),
+    city_dropdown,
+    html.Label("Select Package"),
+    package_dropdown,    
+    html.Label("Select Angle"),    
+    angle_dropdown,    
+    html.Label("Select Direction"),    
+    direction_dropdown,
+    ], className="dropdown-frame",style={'border': '3px solid black', 'padding': '10px'})# Apply Bootstrap classes)# Wrap the second graph and both Dropdowns in a dcc.Loading container
+
+second_graph = dcc.Loading(
+        [    
+            dropdown_frame,    
+            dcc.Graph(figure=fig),
+            
+            html.Div(id='output')  # Output element to display selected city
+                    ])
 
 graphs = html.Div(
     [
@@ -70,31 +94,21 @@ graphs = html.Div(
     ]
 )
 
-# These buttons are added to the app just to show the Bootstrap theme colors
-buttons = html.Div(
-    [
-        dbc.Button("Primary", color="primary"),
-        dbc.Button("Secondary", color="secondary"),
-        dbc.Button("Success", color="success"),
-        dbc.Button("Warning", color="warning"),
-        dbc.Button("Danger", color="danger"),
-        dbc.Button("Info", color="info"),
-        dbc.Button("Light", color="light"),
-        dbc.Button("Dark", color="dark"),
-        dbc.Button("Link", color="link"),
-    ],
-)
 
-heading = html.H1("Dash Bootstrap Template Demo", className="bg-primary text-white p-2")
 
-app.layout = dbc.Container(fluid=True, children=[heading, buttons, graphs])
+heading = html.H1("Solar Panels: Return of Investment", className="bg-primary text-white p-2",style={"text-align": "center"})
+app.layout = dbc.Container(fluid=True, children=[heading, graphs])
 
 @app.callback(
     Output('output', 'children'),
-    [Input('city-dropdown', 'value')]
+    [Input('city-dropdown', 'value'),
+     Input('package-dropdown', 'value'),
+     Input('angle-dropdown', 'value'),
+     Input('direction-dropdown', 'value')]
 )
-def update_output(selected_city):
-    return f'Du har valt staden: {selected_city}'
+def update_output(selected_city,selected_package,selected_angle,selected_direction):
+    return f"You have chosen: {selected_city}, {selected_package}, {selected_angle}, {selected_direction}"
+
 
 if __name__ == "__main__":
     app.run_server(debug=True)
