@@ -76,6 +76,7 @@ predictions_df = pd.DataFrame({'Year': future_years, 'Predicted kWh price': futu
 
 # Display the predictions
 print(predictions_df)
+predictions_df.to_csv("predicted_prices.csv", index=False)
 
 print(f"Mean Squared Error (MSE): {mse}")
 print(f"R-squared (R²): {r2}")
