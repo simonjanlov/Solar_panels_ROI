@@ -30,3 +30,5 @@ Zon 4 genomsnittlig avvikelse: 76.5 - 64.8 = +11.7
 documentation for the "elpriszon" data:
 https://www.scb.se/contentassets/1e73cca715aa4bfba4f951d86537bf59/en0301_do_-2016.pdf section 0.12
 
+the source for our irradiation data:
+https://re.jrc.ec.europa.eu/pvg_tools/en/#MR
