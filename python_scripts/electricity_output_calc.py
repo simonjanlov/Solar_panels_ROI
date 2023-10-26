@@ -27,7 +27,7 @@ class SolarPanelSystem:
 
     def electricity_cost_saved_per_year(self, electricity_price_per_kWh):
         """Calculates the saved cost per year (from not having to pay the electricity bill)"""
-        return self.calc_yearly_electricity_output() * electricity_price_per_kWh        
+        return self.calc_yearly_electricity_output() * electricity_price_per_kWh
         
 
     def profitability_over_time(self, list_of_electricity_prices, years=30):
@@ -48,7 +48,7 @@ class SolarPanelSystem:
             total_accumulated_savings = 0
             for electricity_price in list_of_electricity_prices:
                 total_accumulated_savings += self.electricity_cost_saved_per_year(electricity_price)
-                balance_per_year.append((self.system_cost * -1) + total_accumulated_savings)
+                balance_per_year.append(round((self.system_cost * -1) + total_accumulated_savings, 2))
             
             return balance_per_year
 
