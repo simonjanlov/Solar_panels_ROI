@@ -1,0 +1,24 @@
+Projekt dag 4
+
+KOM IHÅG: Dra bort skatt på inköpspriserna när vi beräknar.
+
+
+IDAG:
+
+Jobba med Khaqan gällande förutspåelser på elpriser -DONE
+
+Skapa ett skript som tar textinput och returnerar datan vi behöver -DONE
+
+
+
+
+
+problem med API-prylen: 
+
+databasen ger bara till 2016 från API request
+hur kopplar vi staden till sin elpriszon?
+
+
+KOLLA UPP:
+
+Är pris på systemet med skatt? I så fall behöver vi låta användaren ange priset utan skatt för att kunna jämföra med elpriserna som är utan skatt. -DONE
