@@ -14,15 +14,22 @@ from calc_years_until_breakeven import calc_years_until_breakeven
 from data_dicts import packages_dict, cities_dict, years_list
 
 
-# Load the "vapor" themed figure template from dash-bootstrap-templates library,
+# Load the "superhero" themed figure template from dash-bootstrap-templates library,
 # adds it to plotly.io, and makes it the default figure template.
-load_figure_template("vapor")
+load_figure_template("superhero")
 
 # Create a Dash app with Bootstrap "vapor" theme
-app = Dash(__name__, external_stylesheets=[dbc.themes.VAPOR])
+app = Dash(__name__, external_stylesheets=[dbc.themes.SUPERHERO])
 
 # Load the price prognoses data
-price_prognoses_data = pd.read_csv(r'data\predicted_prices_withzones.csv')
+price_prognoses_data = pd.read_csv(r'final_project\data\predicted_prices_withzones.csv')
+data = pd.read_csv(r'final_project\data\Electricity generation by source - Sweden.csv')
+df = pd.DataFrame(data)
+df.drop(columns=['Unnamed: 0'], inplace=True)
+sums = df.sum()
+fig1 = px.pie(names=sums.index, values=sums.values, title='Energy source destribution in Sweden')
+fig1.update_traces(pull=[0,0,0,0,0,0,0,0,0.2])
+
 
 # Create the line graph for the price predictions
 prognoses_fig = px.line(price_prognoses_data, x='Year', y=['Predicted kWh price', 'zone1', 'zone2', 'zone3', 'zone4'], title='Price Prognoses')
@@ -35,7 +42,7 @@ fig = go.Figure(go.Indicator(
     domain={'x': [0, 1], 'y': [0, 1],
             'row': 0, 'column': 0},
     title={'text': "No of years "},
-    gauge={'bar': {'color': "blue"}  # Change the color here
+    gauge={'bar': {'color': "#f98435"}  # Change the color here
     }))
 
 # Create the graph for the profitability
@@ -134,8 +141,9 @@ def update_output(selected_city, selected_package, selected_angle, selected_dire
     value=calc_years_until_breakeven(years_list, profit_values),
     domain={'x': [0, 1], 'y': [0, 1],
             'row': 0, 'column': 0},
-    title={'text': "No of years "},
-    gauge={'bar': {'color': "blue"}  # Change the color here
+    title={'text': "Years until breakeven"},
+    gauge={'bar': {'color': "#f98435"},
+            'axis': {'range': [0, 30]}  # Change the color here
     }))
     
     return main_fig, fig
@@ -152,11 +160,13 @@ app.layout = dbc.Container(fluid=True, children=[
                         # Center the dropdown menu in the middle of the Dash app
                         dbc.Row(
                             dbc.Col([
-                                html.H4('Choose Your Fighter', style={'font-size': '24px', 'font-weight': 'bold', 'text-align': 'center'}),
+                                html.H2('Solar Panels: Return on Invested Capital (ROIC)', style={'font-size': '34px', 'font-weight': 'bold', 'text-align': 'center', 'margin-bottom': '20px'}),
                                 dropdown_row,
+                                
                             ],
-                                width=6,
+                                width=7,
                                 className="mb-3",
+                                style={"margin-top": "40px"}
                             ),
                             # Add justify-content-center to center the content
                             className="justify-content-center",
@@ -171,7 +181,7 @@ app.layout = dbc.Container(fluid=True, children=[
                         ),
                         dbc.Row(
                             [
-                                dbc.Col(dcc.Graph(figure=fig), lg=6),
+                                dbc.Col(dcc.Graph(figure=fig1), lg=6),
                                 dbc.Col(dcc.Graph(figure=prognoses_fig), lg=6)
                             ],
                             className="mt-4",
