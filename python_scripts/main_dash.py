@@ -54,9 +54,6 @@ direction_dropdown = dcc.Dropdown(
 )
 
 
-# test_df = pd.DataFrame({'x': ['Luleå', 'Package 1 (12 solar panels)'], 'y': [20, 'South West']})
-# main_fig = px.bar(test_df, x='x', y='y', title='Return of Investment')
-
 tilt_and_direction = find_tilt_and_direction_value(20, '225 SV')
 my_system = SolarPanelSystem(system_cost=packages_dict['Package 1 (12 solar panels)']['system_cost'],
                              system_effect_kWp=packages_dict['Package 1 (12 solar panels)']['system_effect'],
@@ -132,6 +129,10 @@ def update_output(selected_city, selected_package, selected_angle, selected_dire
 
     years_profit_df = pd.DataFrame({'Years': years_list, 'Profit': profit_values})
     main_fig = px.bar(years_profit_df, x='Years', y='Profit', title='Return of Investment')
+
+    # calculate the big number (years until breakeven)
+    
+
     return main_fig,
     
 
