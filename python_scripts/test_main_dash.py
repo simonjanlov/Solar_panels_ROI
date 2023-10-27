@@ -3,6 +3,7 @@ import plotly.express as px
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 import pandas as pd
+# import string
 from dash_bootstrap_templates import load_figure_template
 
 # Import class and functions
@@ -16,17 +17,26 @@ from data_dicts import packages_dict, cities_dict, years_list
 
 # Load the "vapor" themed figure template from dash-bootstrap-templates library,
 # adds it to plotly.io, and makes it the default figure template.
-load_figure_template("vapor")
+load_figure_template("superhero")
 
 # Create a Dash app with Bootstrap "vapor" theme
-app = Dash(__name__, external_stylesheets=[dbc.themes.VAPOR])
+app = Dash(__name__, external_stylesheets=[dbc.themes.SUPERHERO])
 
 # Load the price prognoses data
 price_prognoses_data = pd.read_csv(r'data\predicted_prices_withzones.csv')
 
 # Create the line graph for the price predictions
-prognoses_fig = px.line(price_prognoses_data, x='Year', y=['Predicted kWh price', 'zone1', 'zone2', 'zone3', 'zone4'], title='Price Prognoses')
-prognoses_fig.update_layout(legend=dict(orientation="h", y=-0.2, x=0.5, xanchor="center"))
+prognoses_fig = px.line(price_prognoses_data, 
+                        x='Year', 
+                        y=['Predicted kWh price', 'zone1', 'zone2', 'zone3', 'zone4'], 
+                        title='Price Forecast (per electricity zone)')
+prognoses_fig.update_traces(name="zone 1", selector=dict(name="zone1"))
+prognoses_fig.update_traces(name="zone 2", selector=dict(name="zone2"))
+prognoses_fig.update_traces(name="zone 3", selector=dict(name="zone3"))
+prognoses_fig.update_traces(name="zone 4", selector=dict(name="zone4"))
+prognoses_fig.update_layout(legend=dict(orientation="h", y=-0.2, x=0.5, xanchor="center"), 
+                            yaxis_title="predicted price (SEK/kWh)", 
+                            xaxis_title="")
 
 # Create the gauge figure
 fig = go.Figure(go.Indicator(
@@ -69,8 +79,8 @@ package_dropdown = dcc.Dropdown(
 
 angle_dropdown = dcc.Dropdown(
     id='angle-dropdown',
-    options=['0', '10', '20', '30', '40', '50', '60', '70', '80', '90'],
-    value='40',
+    options=['0°', '10°', '20°', '30°', '40°', '50°', '60°', '70°', '80°', '90°'],
+    value='40°',
     className='mb-3',
     style={'color': 'black', 'width': '100%'}  # Apply Bootstrap classes
 )
@@ -93,7 +103,7 @@ dropdown_row = dbc.Row([
     ], width=3),  # Adjust the width as needed
 
     dbc.Col([
-        html.Label("Select Angle"),
+        html.Label("Select Tilt"),
         angle_dropdown,
     ], width=3),  # Adjust the width as needed
 
@@ -102,7 +112,6 @@ dropdown_row = dbc.Row([
         direction_dropdown,
     ], width=3),  # Adjust the width as needed
 ], className="mb-3")
-
 
 
 # Create a callback for updating the chart
@@ -117,6 +126,7 @@ dropdown_row = dbc.Row([
 def update_output(selected_city, selected_package, selected_angle, selected_direction):
     
     # update the bar chart
+    selected_angle = selected_angle[:selected_angle.find('°')]
     tilt_and_direction = find_tilt_and_direction_value(int(selected_angle), selected_direction)
     
     my_system = SolarPanelSystem(system_cost=packages_dict[selected_package]['system_cost'],
@@ -127,6 +137,7 @@ def update_output(selected_city, selected_package, selected_angle, selected_dire
     profit_values = my_system.profitability_over_time(cities_dict[selected_city]['predicted_prices'])
     years_profit_df = pd.DataFrame({'Years': years_list, 'Profit': profit_values})
     main_fig = px.bar(years_profit_df, x='Years', y='Profit', title='Return of Investment')
+    main_fig.update_layout(yaxis_title="Profitability (SEK)", xaxis_title="")
 
     # update the numerical figure
     fig = go.Figure(go.Indicator(
