@@ -10,9 +10,9 @@ from electricity_output_calc import SolarPanelSystem
 from find_tilt_and_direction_value import find_tilt_and_direction_value
 from calc_years_until_breakeven import calc_years_until_breakeven
 
-
 # Import the data for cities and solar packages
 from data_dicts import packages_dict, cities_dict, years_list
+
 
 # Load the "vapor" themed figure template from dash-bootstrap-templates library,
 # adds it to plotly.io, and makes it the default figure template.
@@ -24,10 +24,11 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.VAPOR])
 # Load the price prognoses data
 price_prognoses_data = pd.read_csv(r'data\predicted_prices_withzones.csv')
 
-prognoses_fig = px.line(price_prognoses_data, x='Year', y='Predicted kWh price', title='Price Prognoses')
+# Create the line graph for the price predictions
 prognoses_fig = px.line(price_prognoses_data, x='Year', y=['Predicted kWh price', 'zone1', 'zone2', 'zone3', 'zone4'], title='Price Prognoses')
 prognoses_fig.update_layout(legend=dict(orientation="h", y=-0.2, x=0.5, xanchor="center"))
 
+# Create the gauge figure
 fig = go.Figure(go.Indicator(
     mode="gauge+number",
     value=15,
@@ -36,6 +37,18 @@ fig = go.Figure(go.Indicator(
     title={'text': "No of years "},
     gauge={'bar': {'color': "blue"}  # Change the color here
     }))
+
+# Create the graph for the profitability
+tilt_and_direction = find_tilt_and_direction_value(20, '225 SV')
+my_system = SolarPanelSystem(system_cost=packages_dict['Package 1 (12 solar panels)']['system_cost'],
+                             system_effect_kWp=packages_dict['Package 1 (12 solar panels)']['system_effect'],
+                             insolation=cities_dict['Luleå']['insolation'],
+                             tilt_and_direction=tilt_and_direction)
+profit_values = my_system.profitability_over_time(cities_dict['Luleå']['predicted_prices'])
+
+years_profit_df = pd.DataFrame({'Years': years_list, 'Profit': profit_values})
+main_fig = px.bar(years_profit_df, x='Years', y='Profit', title='Return of Investment')
+
 
 # Create Dropdowns for the second graph
 city_dropdown = dcc.Dropdown(
@@ -90,23 +103,7 @@ dropdown_row = dbc.Row([
     ], width=3),  # Adjust the width as needed
 ], className="mb-3")
 
-# centered_dropdown_div = html.Div(
-#     dbc.Row(
-#         dbc.Col(dropdown_row, width={"size": 6, "offset": 3}),
-#         className="mb-3",
-#     ),
-#     style={"display": "flex", "justify-content": "center", "align-items": "center", "height": "80vh"}
-# )
 
-tilt_and_direction = find_tilt_and_direction_value(20, '225 SV')
-my_system = SolarPanelSystem(system_cost=packages_dict['Package 1 (12 solar panels)']['system_cost'],
-                             system_effect_kWp=packages_dict['Package 1 (12 solar panels)']['system_effect'],
-                             insolation=cities_dict['Luleå']['insolation'],
-                             tilt_and_direction=tilt_and_direction)
-profit_values = my_system.profitability_over_time(cities_dict['Luleå']['predicted_prices'])
-
-years_profit_df = pd.DataFrame({'Years': years_list, 'Profit': profit_values})
-main_fig = px.bar(years_profit_df, x='Years', y='Profit', title='Return of Investment')
 
 # Create a callback for updating the chart
 @app.callback(
@@ -143,8 +140,6 @@ def update_output(selected_city, selected_package, selected_angle, selected_dire
     
     return main_fig, fig
 
-# Define the app layout
-# ... (your existing code above)
 
 # Define the app layout
 app.layout = dbc.Container(fluid=True, children=[
