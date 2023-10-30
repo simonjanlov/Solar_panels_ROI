@@ -56,8 +56,8 @@ fig = go.Figure(go.Indicator(
 
 # Create the graph for the profitability
 tilt_and_direction = find_tilt_and_direction_value(20, '225 SV')
-my_system = SolarPanelSystem(system_cost=packages_dict['Package 1 (12 solar panels)']['system_cost'],
-                             system_effect_kWp=packages_dict['Package 1 (12 solar panels)']['system_effect'],
+my_system = SolarPanelSystem(system_cost=packages_dict['12 solar panels']['system_cost'],
+                             system_effect_kWp=packages_dict['12 solar panels']['system_effect'],
                              insolation=cities_dict['Luleå']['insolation'],
                              tilt_and_direction=tilt_and_direction)
 profit_values = my_system.profitability_over_time(cities_dict['Luleå']['predicted_prices'])
@@ -80,8 +80,8 @@ city_dropdown = dcc.Dropdown(
 
 package_dropdown = dcc.Dropdown(
     id='package-dropdown',
-    options=['Package 1 (12 solar panels)', 'Package 2 (25 solar panels)', 'Package 3 (35 solar panels)', 'Package 4 (45 solar panels)'],
-    value='Package 2 (25 solar panels)',
+    options=['12 solar panels', '25 solar panels', '35 solar panels', '45 solar panels'],
+    value='25 solar panels',
     className='mb-3',
     style={'color': 'black', 'width': '100%'}  # Apply Bootstrap classes
 )
@@ -95,8 +95,8 @@ angle_dropdown = dcc.Dropdown(
 )
 direction_dropdown = dcc.Dropdown(
     id='direction-dropdown',
-    options=['270 V', '225 SV', '180 S', '135 SO', '90 E'],
-    value='270 V',
+    options=['West', 'South West', 'South', 'South East', 'East'],
+    value='West',
     className='mb-3',
     style={'color': 'black', 'width': '100%'}  # Apply Bootstrap classes
 )
@@ -134,6 +134,15 @@ dropdown_row = dbc.Row([
 )
 def update_output(selected_city, selected_package, selected_angle, selected_direction):
     
+    # replace user friendly value with the real csv file name (of direction)
+    direction_dropdown_values = ['West', 'South West', 'South', 'South East', 'East']
+    direction_csv_columns = ['270 V', '225 SV', '180 S', '135 SO', '90 E']
+    for i in range(len(direction_dropdown_values)):
+        if selected_direction == direction_dropdown_values[i]:
+            selected_direction = direction_csv_columns[i]
+            break
+
+
     # update the bar chart
     selected_angle = selected_angle[:selected_angle.find('°')]
     tilt_and_direction = find_tilt_and_direction_value(int(selected_angle), selected_direction)

@@ -1,10 +1,11 @@
 import pandas as pd
 
+
 packages_dict = {
-    'Package 1 (12 solar panels)': {'system_cost': 87995 / 1.25, 'system_effect': 4.9},
-    'Package 2 (25 solar panels)': {'system_cost': 130999 / 1.25, 'system_effect': 10.3}, 
-    'Package 3 (35 solar panels)': {'system_cost': 164999 / 1.25, 'system_effect': 14.4}, 
-    'Package 4 (45 solar panels)': {'system_cost': 195999 / 1.25, 'system_effect': 18.5}
+    '12 solar panels': {'system_cost': 87995 / 1.25, 'system_effect': 4.9},
+    '25 solar panels': {'system_cost': 130999 / 1.25, 'system_effect': 10.3}, 
+    '35 solar panels': {'system_cost': 164999 / 1.25, 'system_effect': 14.4}, 
+    '45 solar panels': {'system_cost': 195999 / 1.25, 'system_effect': 18.5}
 }
 
 elpris_df = pd.read_csv(r'data\predicted_prices_withzones.csv')
