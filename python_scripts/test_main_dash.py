@@ -171,11 +171,11 @@ app.layout = dbc.Container(fluid=True, children=[
                         # Center the dropdown menu in the middle of the Dash app
                         dbc.Row(
                             dbc.Col([
-                                html.H2('Solar Panels: Return on Invested Capital (ROIC)', style={'font-size': '34px', 'font-weight': 'bold', 'text-align': 'center', 'margin-bottom': '20px'}),
+                                html.H2('Solar Panels: Return on Invested Capital', style={'font-size': '34px', 'font-weight': 'bold', 'text-align': 'center', 'margin-bottom': '20px'}),
                                 dropdown_row,
                                 
                             ],
-                                width=7,
+                                width=8,
                                 className="mb-3",
                                 style={"margin-top": "40px"}
                             ),
