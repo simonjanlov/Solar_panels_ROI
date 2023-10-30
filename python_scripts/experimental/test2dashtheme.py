@@ -6,32 +6,39 @@ from dash_bootstrap_templates import load_figure_template
 
 # Load the "vapor" themed figure template from dash-bootstrap-templates library,
 # adds it to plotly.io, and makes it the default figure template.
-load_figure_template("vapor")
+load_figure_template("superhero")
 
 # Create a Dash app with Bootstrap "vapor" theme
-app = Dash(__name__, external_stylesheets=[dbc.themes.VAPOR])
+app = Dash(__name__, external_stylesheets=[dbc.themes.SUPERHERO])
 
 # Load your existing data
-data = pd.read_csv('C:\\Users\\henry\\Documents\\projekt\\Visualization\\CustomerService\\data\\testData_month_orig.csv')
+data = pd.read_csv(r'data\Electricity generation by source - Sweden.csv')
 df = pd.DataFrame(data)
+df.drop(columns=['Unnamed: 0'], inplace=True)
+sums = df.sum()
+fig = px.pie(names=sums.index, values=sums.values, title='Energy source destribution in Sweden')
+fig.update_traces(pull=[0,0,0,0,0,0,0,0,0.2])
+new_colors = ['#FF5733', '#33FF57', '#3366FF', '#FF33B2']
+fig.update_traces(marker=dict(colors=new_colors))
 
-bar_df = df.iloc[0, [5, 6, 7, 8, 9, 10, 11, 12]]
-n_df = pd.DataFrame(bar_df)
-n_df.reset_index(inplace=True)
-n_df.rename(
-    columns={"index": "Hours", 0: "No of Calls"},
-    inplace=True
-)
 # Custom colors for the bar chart
-bar_colors = ['#1f77b4', 'black', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f']
+# bar_colors = ['#1f77b4', 'black', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f']
 
 # Load the price prognoses data
 price_prognoses_data = pd.read_csv('C:\\Users\\henry\\Documents\\projekt\\examens_proj\\final_project\\data\\predicted_prices.csv')
 
-prognoses_fig = px.line(price_prognoses_data, x='Year', y='Predicted kWh price', title='Price Prognoses')
 
-fig = px.bar(n_df, x='Hours', y='No of Calls', title='Return of Investment', color='Hours',
-             color_discrete_sequence=bar_colors)
+prognoses_fig = px.line(price_prognoses_data, x='Year', y='Predicted kWh price', title='Price Prognoses')
+prognoses_fig.update_layout(
+    plot_bgcolor="#11293D") #4e5d6c
+# columns = df.columns
+
+# sums = pd.DataFrame(sums)
+
+
+fig = px.pie(names=sums.index, values=sums.values, title='Energy source destribution in Sweden')
+fig.update_traces(rotation= 90,pull=[0,0,0,0,0,0,0,0,0.2])
+
 
 # Create Dropdowns for the second graph
 city_dropdown = dcc.Dropdown(
@@ -86,17 +93,17 @@ graphs = html.Div(
     [
         dbc.Row(
             [
-                dbc.Col(dcc.Graph(figure=prognoses_fig), lg=6),
+                dbc.Col(dcc.Graph(figure=prognoses_fig,style={'border': '3px solid black', 'padding': '10px'}), lg=6),
                 dbc.Col(second_graph, lg=6),
             ],
-            className="mt-4",
+            className="mt-4"
         ),
     ]
 )
 
 
 
-heading = html.H1("Solar Panels: Return of Investment", className="bg-primary text-white p-2",style={"text-align": "center"})
+heading = html.H1("Solar Panels: Return of Investment", className="bg-black text-white p-2",style={"text-align": "center"})
 app.layout = dbc.Container(fluid=True, children=[heading, graphs])
 
 @app.callback(
