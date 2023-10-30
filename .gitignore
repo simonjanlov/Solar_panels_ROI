@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+python_scripts/__pycache__/electricity_output_calc.cpython-311.pyc
 
 # C extensions
 *.so

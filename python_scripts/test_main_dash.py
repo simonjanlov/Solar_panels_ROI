@@ -43,7 +43,7 @@ prognoses_fig.update_traces(name="zone 3", selector=dict(name="zone3"))
 prognoses_fig.update_traces(name="zone 4", selector=dict(name="zone4"))
 prognoses_fig.update_layout(legend=dict(orientation="h", y=-0.2, x=0.5, xanchor="center"), 
                             yaxis_title="predicted price (SEK/kWh)", 
-                            xaxis_title="")
+                            xaxis_title="",plot_bgcolor="#11293D")
 
 # Create the gauge figure
 fig = go.Figure(go.Indicator(
@@ -65,7 +65,7 @@ profit_values = my_system.profitability_over_time(cities_dict['Luleå']['predict
 
 years_profit_df = pd.DataFrame({'Years': years_list, 'Profit': profit_values})
 main_fig = px.bar(years_profit_df, x='Years', y='Profit', title='Return of Investment')
-
+main_fig.update_layout(plot_bgcolor="#11293D")
 
 # Create Dropdowns for the second graph
 city_dropdown = dcc.Dropdown(
@@ -144,7 +144,7 @@ def update_output(selected_city, selected_package, selected_angle, selected_dire
     profit_values = my_system.profitability_over_time(cities_dict[selected_city]['predicted_prices'])
     years_profit_df = pd.DataFrame({'Years': years_list, 'Profit': profit_values})
     main_fig = px.bar(years_profit_df, x='Years', y='Profit', title='Return of Investment')
-    main_fig.update_layout(yaxis_title="Profitability (SEK)", xaxis_title="")
+    main_fig.update_layout(yaxis_title="Profitability (SEK)", xaxis_title="",plot_bgcolor="#11293D")
 
     # update the numerical figure
     fig = go.Figure(go.Indicator(
