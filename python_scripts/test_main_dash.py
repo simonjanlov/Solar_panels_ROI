@@ -3,7 +3,6 @@ import plotly.express as px
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 import pandas as pd
-# import string
 from dash_bootstrap_templates import load_figure_template
 
 # Import class and functions
@@ -19,7 +18,7 @@ from data_dicts import packages_dict, cities_dict, years_list
 # adds it to plotly.io, and makes it the default figure template.
 load_figure_template("superhero")
 
-# Create a Dash app with Bootstrap "vapor" theme
+# Create a Dash app with Bootstrap "superhero" theme
 app = Dash(__name__, external_stylesheets=[dbc.themes.SUPERHERO])
 
 # Load the price prognoses data
@@ -62,9 +61,12 @@ my_system = SolarPanelSystem(system_cost=packages_dict['Package 1 (12 solar pane
                              insolation=cities_dict['Luleå']['insolation'],
                              tilt_and_direction=tilt_and_direction)
 profit_values = my_system.profitability_over_time(cities_dict['Luleå']['predicted_prices'])
-
 years_profit_df = pd.DataFrame({'Years': years_list, 'Profit': profit_values})
-main_fig = px.bar(years_profit_df, x='Years', y='Profit', title='Return of Investment')
+
+# round the values for hover output purposes (round -3 means even thousands, round -2 will give one "decimal")
+years_profit_df['Profit'] = [round(x, -2) if abs(x) > 1000 else x for x in profit_values]
+
+main_fig = px.bar(years_profit_df, x='Years', y='Profit', title='Return of Investment', hover_data={'Profit':':.2f'})
 main_fig.update_layout(plot_bgcolor="#11293D")
 
 # Create Dropdowns for the second graph
@@ -143,6 +145,10 @@ def update_output(selected_city, selected_package, selected_angle, selected_dire
     
     profit_values = my_system.profitability_over_time(cities_dict[selected_city]['predicted_prices'])
     years_profit_df = pd.DataFrame({'Years': years_list, 'Profit': profit_values})
+    
+    # round the values for hover output purposes (round -3 means even thousands, round -2 will give one "decimal")
+    years_profit_df['Profit'] = [round(x, -2) if abs(x) > 1000 else x for x in profit_values]
+
     main_fig = px.bar(years_profit_df, x='Years', y='Profit', title='Return of Investment')
     main_fig.update_layout(yaxis_title="Profitability (SEK)", xaxis_title="",plot_bgcolor="#11293D")
 
