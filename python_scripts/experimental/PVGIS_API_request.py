@@ -3,21 +3,41 @@
 
 import requests
 
-
 # minimum:
 # https://re.jrc.ec.europa.eu/api/MRcalc?lat=45&lon=8&horirrad=1
 
-def get_pvgis_data():
-    
-    full_url = 'https://re.jrc.ec.europa.eu/api/MRcalc?lat=56.855&lon=12.691&raddatabase=PVGIS-SARAH&horirrad=1'
+
+def get_pvgis_data(lat, lon):
+        
     # raddatabase=PVGIS-SARAH ger oss bara data fram till 2016
     # raddatabase=PVGIS-SARAH2 är databasen som innehåller data fram till 2020 men det verkar inte som att vi kan
     # nå den från API?
 
-    response = requests.get(full_url)
+    # api-endpoint
+    URL = "https://re.jrc.ec.europa.eu/api/MRcalc"
+    
+    # location given here
+    # lat = '56.855'
+    # lon = '12.691'
+    raddatabase = "PVGIS-SARAH"
+    horirrad = '1'
+    
+    # defining a params dict for the parameters to be sent to the API
+    PARAMS = {'lat': lat,
+              'lon': lon,
+              'raddatabase': raddatabase,
+              'horirrad': horirrad}
+    
+    # sending get request and saving the response as response object
+    response = requests.get(url = URL, params = PARAMS)
+    
     csv_data = response.text
     return csv_data
 
 
 if __name__=="__main__":
-    print(get_pvgis_data())
+
+    lat = '56.855'
+    lon = '12.691'
+
+    print(get_pvgis_data(lat, lon))
