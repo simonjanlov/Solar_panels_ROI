@@ -10,7 +10,7 @@ def city_to_lat_lon(city):
     df = pd.json_normalize(data)
     lat = df["lat"][0]
     lon = df["lon"][0]
-    return lon,lat
+    return lat, lon
 # if response.status_code == requests.codes.ok:
 #     print(response.text)
 # else:
