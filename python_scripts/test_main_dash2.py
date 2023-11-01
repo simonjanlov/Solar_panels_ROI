@@ -1,9 +1,15 @@
 from dash import Dash, dcc, html, Input, Output
+import sys
+from pathlib import Path
 import plotly.express as px
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 import pandas as pd
 from dash_bootstrap_templates import load_figure_template
+
+sys.path.append(str(Path('.').absolute().parent) + '\\final_project')
+
+from config import *
 
 # Import class and functions
 from electricity_output_calc import SolarPanelSystem
@@ -29,8 +35,8 @@ load_figure_template("superhero")
 app = Dash(__name__, external_stylesheets=[dbc.themes.SUPERHERO])
 server = app.server
 # Load the price prognoses data
-price_prognoses_data = pd.read_csv(r'data\predicted_prices_withzones.csv')
-data = pd.read_csv(r'data\Electricity generation by source - Sweden.csv')
+price_prognoses_data = pd.read_csv(price_prognosis_csvpath)
+data = pd.read_csv(electicity_generation_by_source_csvpath)
 df = pd.DataFrame(data)
 df.drop(columns=['Unnamed: 0'], inplace=True)
 sums = df.sum()

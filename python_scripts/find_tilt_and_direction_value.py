@@ -1,11 +1,17 @@
 import pandas as pd
+import sys
+from pathlib import Path
+
+sys.path.append(str(Path('.').absolute().parent) + '\\final_project')
+
+from config import *
 
 
 def find_tilt_and_direction_value(tilt, direction):
     """Input tilt as an integer and direction as a string to return a
     float value for combined tilt and direction"""
     
-    df = pd.read_csv(r'data\tilt_and_direction_table.csv', delimiter=';', index_col='Lutning')
+    df = pd.read_csv(tilt_and_direction_table_csvpath, delimiter=';', index_col='Lutning')
     return df[direction][tilt] / 100
 
 
