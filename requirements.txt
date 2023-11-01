@@ -8,5 +8,4 @@ dash-core-components
 dash-daq
 dash-html-components
 dash-table
-plotly-graph-objects
 gunicorn
