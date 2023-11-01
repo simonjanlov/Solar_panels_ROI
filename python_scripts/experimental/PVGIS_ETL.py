@@ -9,6 +9,8 @@ def coordinates_to_insolation_mean(city_name):
     
     # convert city name to coordinates
     lat, lon = city_to_lat_lon(city_name)
+    # print(lat)
+    # print(lon)
 
     # call API and save csv data in buffer
     data = get_pvgis_data(lat, lon)
@@ -27,6 +29,6 @@ def coordinates_to_insolation_mean(city_name):
 
 
 if __name__=='__main__':
-    
+
 
     print(coordinates_to_insolation_mean('Göteborg'))
