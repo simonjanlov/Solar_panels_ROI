@@ -4,7 +4,7 @@ import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 import pandas as pd
 from dash_bootstrap_templates import load_figure_template
-
+import os 
 # Import class and functions
 from electricity_output_calc import SolarPanelSystem
 from find_tilt_and_direction_value import find_tilt_and_direction_value
@@ -22,8 +22,8 @@ load_figure_template("superhero")
 app = Dash(__name__, external_stylesheets=[dbc.themes.SUPERHERO])
 server = app.server
 # Load the price prognoses data
-price_prognoses_data = pd.read_csv(r'final_project\data\predicted_prices_withzones.csv')
-data = pd.read_csv(r'final_project\data\Electricity generation by source - Sweden.csv')
+price_prognoses_data = pd.read_csv(r'data\predicted_prices_withzones.csv')
+data = pd.read_csv(r'data\Electricity generation by source - Sweden.csv')
 df = pd.DataFrame(data)
 df.drop(columns=['Unnamed: 0'], inplace=True)
 sums = df.sum()
