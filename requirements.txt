@@ -9,3 +9,4 @@ dash-daq
 dash-html-components
 dash-table
 gunicorn
+os

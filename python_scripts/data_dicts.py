@@ -1,5 +1,9 @@
 import pandas as pd
+import os
 
+# Determine the directory of your current script
+current_dir = os.path.dirname(os.path.realpath(__file__ if '__file__' in globals() else sys.executable))
+data_dir = os.path.join(current_dir, "data")  # Define the data directory path
 
 packages_dict = {
     '12 solar panels': {'system_cost': 87995 / 1.25, 'system_effect': 4.9},
@@ -8,7 +12,7 @@ packages_dict = {
     '45 solar panels': {'system_cost': 195999 / 1.25, 'system_effect': 18.5}
 }
 
-elpris_df = pd.read_csv(r'data\predicted_prices_withzones.csv')
+elpris_df = pd.read_csv(os.path.join(data_dir, 'predicted_prices_withzones.csv'))
 
 years_list = list(elpris_df['Year'])
 years_list = list([2023] + years_list)
