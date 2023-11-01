@@ -25,9 +25,10 @@ def coordinates_to_insolation_mean(city_name):
     df_sum_ghi = df.groupby('year').sum('ghi')
     
     return df_sum_ghi.ghi.mean()
+    
 
 
 if __name__=='__main__':
 
 
-    print(coordinates_to_insolation_mean('Kiruna'))
+    print(coordinates_to_insolation_mean('Göteborg'))

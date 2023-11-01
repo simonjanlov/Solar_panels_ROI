@@ -1,4 +1,4 @@
-from dash import Dash, dcc, html, Input, Output
+from dash import Dash, dcc, html, Input, Output, State
 import sys
 from pathlib import Path
 import plotly.express as px
@@ -9,12 +9,13 @@ from dash_bootstrap_templates import load_figure_template
 
 sys.path.append(str(Path('.').absolute().parent) + '\\final_project')
 
-from config import *
+from config2 import *
 
 # Import class and functions
 from electricity_output_calc import SolarPanelSystem
 from find_tilt_and_direction_value import find_tilt_and_direction_value
 from calc_years_until_breakeven import calc_years_until_breakeven
+from PVGIS_ETL import coordinates_to_insolation_mean
 
 # Import the data for cities and solar packages
 from data_dicts import packages_dict, cities_dict, years_list
@@ -79,10 +80,11 @@ fig = go.Figure(go.Indicator(
     }))
 
 # Create the graph for the profitability
+insolation_mean = 950
 tilt_and_direction = find_tilt_and_direction_value(20, '225 SV')
 my_system = SolarPanelSystem(system_cost=packages_dict['12 solar panels']['system_cost'],
                              system_effect_kWp=packages_dict['12 solar panels']['system_effect'],
-                             insolation=950,
+                             insolation=insolation_mean,
                              tilt_and_direction=tilt_and_direction)
 profit_values = my_system.profitability_over_time(zone_1_predicted_prices)
 years_profit_df = pd.DataFrame({'Years': years_list, 'Profit': profit_values})
@@ -162,17 +164,33 @@ dropdown_row = dbc.Row([
 ], className="mb-3")
 
 
+# @app.callback(
+#         Output('text-output', 'children'),
+#         State("city-textbox", "value"),
+#         Input("city-textbox", "n_submit")
+# )
+
+# def print_city(city, n_submit):
+#     if n_submit is None:
+#         return "Type something and press Enter."
+#     else:
+#         return f"You pressed Enter. You typed: {city}"
+
 @app.callback(
         Output('text-output', 'children'),
-        Input('city-textbox', 'value'),
+        State("city-textbox", "value"),
         Input("city-textbox", "n_submit")
 )
 
 def print_city(city, n_submit):
-    if n_submit is None:
-        return "Type something and press Enter."
-    else:
-        return f"You pressed Enter. You typed: {city}"
+    global insolation_mean
+    insolation_mean = coordinates_to_insolation_mean(city)
+
+    # if n_submit is None:
+    #     return "Type something and press Enter."
+    # else:
+    #     insolation_mean = coordinates_to_insolation_mean(city)
+        # return f"You pressed Enter. {city} has an insolation mean of {round(insolation_mean, 2)}"
 
 
 # Create a callback for updating the chart
@@ -182,9 +200,10 @@ def print_city(city, n_submit):
     [Input('pricezone-dropdown', 'value'),
      Input('package-dropdown', 'value'),
      Input('angle-dropdown', 'value'),
-     Input('direction-dropdown', 'value')]
+     Input('direction-dropdown', 'value'),
+     Input('text-output', 'children')]
 )
-def update_output(selected_zone, selected_package, selected_angle, selected_direction):
+def update_output(selected_zone, selected_package, selected_angle, selected_direction, dummy_val):
     
     selected_list_of_prices = None
     electricity_zone_names = ['SE1', 'SE2', 'SE3', 'SE4']
@@ -207,9 +226,11 @@ def update_output(selected_zone, selected_package, selected_angle, selected_dire
     selected_angle = selected_angle[:selected_angle.find('°')]
     tilt_and_direction = find_tilt_and_direction_value(int(selected_angle), selected_direction)
     
+    global insolation_mean
+
     my_system = SolarPanelSystem(system_cost=packages_dict[selected_package]['system_cost'],
                                  system_effect_kWp=packages_dict[selected_package]['system_effect'],
-                                 insolation=950,
+                                 insolation=insolation_mean,
                                  tilt_and_direction=tilt_and_direction)
     
     profit_values = my_system.profitability_over_time(selected_list_of_prices)
