@@ -162,6 +162,19 @@ dropdown_row = dbc.Row([
 ], className="mb-3")
 
 
+@app.callback(
+        Output('text-output', 'children'),
+        Input('city-textbox', 'value'),
+        Input("city-textbox", "n_submit")
+)
+
+def print_city(city, n_submit):
+    if n_submit is None:
+        return "Type something and press Enter."
+    else:
+        return f"You pressed Enter. You typed: {city}"
+
+
 # Create a callback for updating the chart
 @app.callback(
     [Output('line-chart', 'figure'),
@@ -271,6 +284,7 @@ app.layout = dbc.Container(fluid=True, children=[
                 )),
             ],
         ),
+        html.Div(id="text-output"),
     ]),
 ])
 
