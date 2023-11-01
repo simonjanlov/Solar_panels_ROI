@@ -14,6 +14,8 @@ from calc_years_until_breakeven import calc_years_until_breakeven
 from data_dicts import packages_dict, cities_dict, years_list
 from data_dicts import zone_1_predicted_prices, zone_2_predicted_prices, zone_3_predicted_prices, zone_4_predicted_prices
 
+
+
 list_of_prices_by_zone = [zone_1_predicted_prices,
                           zone_2_predicted_prices,
                           zone_3_predicted_prices,
@@ -86,8 +88,17 @@ main_fig = px.bar(years_profit_df, x='Years', y='Profit', title='Return of Inves
 main_fig.update_layout(title_x=0.5, title_font=dict(size=24))  # You can adjust the size (24 in this example) as needed
 main_fig.update_layout(plot_bgcolor="#11293D")
 
+# Create textbox input
+city_textbox = dcc.Input(
+    id='city-textbox',
+    type='text',
+    placeholder='Input City',
+    className='mb-3',
+    style={'color': 'black', 'width': '100%'}
+)
+
 # Create Dropdowns for the second graph
-city_dropdown = dcc.Dropdown(
+pricezone_dropdown = dcc.Dropdown(
     id='pricezone-dropdown',
     options=['SE1', 'SE2', 'SE3', 'SE4'],
     value='SE1',
@@ -119,8 +130,13 @@ direction_dropdown = dcc.Dropdown(
 )
 dropdown_row = dbc.Row([
     dbc.Col([
+        html.Label("Select City"),
+        city_textbox,
+    ], width=3),  # Adjust the width as needed
+    
+    dbc.Col([
         html.Label("Select Electricity Price Zone"),
-        city_dropdown,
+        pricezone_dropdown,
     ], width=3),  # Adjust the width as needed
 
     dbc.Col([
