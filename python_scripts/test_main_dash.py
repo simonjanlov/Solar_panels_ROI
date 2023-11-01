@@ -20,16 +20,20 @@ load_figure_template("superhero")
 
 # Create a Dash app with Bootstrap "superhero" theme
 app = Dash(__name__, external_stylesheets=[dbc.themes.SUPERHERO])
-
+server = app.server
 # Load the price prognoses data
-price_prognoses_data = pd.read_csv(r'data\predicted_prices_withzones.csv')
-data = pd.read_csv(r'data\Electricity generation by source - Sweden.csv')
+price_prognoses_data = pd.read_csv(r'final_project\data\predicted_prices_withzones.csv')
+data = pd.read_csv(r'final_project\data\Electricity generation by source - Sweden.csv')
 df = pd.DataFrame(data)
 df.drop(columns=['Unnamed: 0'], inplace=True)
 sums = df.sum()
 fig1 = px.pie(names=sums.index, values=sums.values, title='Energy source destribution in Sweden')
 fig1.update_traces(pull=[0,0,0,0,0,0,0,0,0.2])
-
+fig1.update_layout(
+    title='Energy source distribution in Sweden',
+    title_font=dict(size=24),  # Adjust the size (30 in this example) as needed
+    plot_bgcolor="#11293D"
+)
 
 # Create the line graph for the price predictions
 prognoses_fig = px.line(price_prognoses_data, 
@@ -40,9 +44,16 @@ prognoses_fig.update_traces(name="zone 1", selector=dict(name="zone1"))
 prognoses_fig.update_traces(name="zone 2", selector=dict(name="zone2"))
 prognoses_fig.update_traces(name="zone 3", selector=dict(name="zone3"))
 prognoses_fig.update_traces(name="zone 4", selector=dict(name="zone4"))
-prognoses_fig.update_layout(legend=dict(orientation="h", y=-0.2, x=0.5, xanchor="center"), 
-                            yaxis_title="predicted price (SEK/kWh)", 
-                            xaxis_title="",plot_bgcolor="#11293D")
+# Update the size of the title in the line graph
+prognoses_fig.update_layout(
+    title_text='Price Forecast (per electricity zone)',
+    title_font=dict(size=24),  # Adjust the size (30 in this example) as needed
+    legend=dict(orientation="h", y=-0.2, x=0.5, xanchor="center"),
+    yaxis_title="predicted price (SEK/kWh)",
+    xaxis_title="",
+    plot_bgcolor="#11293D"
+)
+
 
 # Create the gauge figure
 fig = go.Figure(go.Indicator(
@@ -50,7 +61,7 @@ fig = go.Figure(go.Indicator(
     value=15,
     domain={'x': [0, 1], 'y': [0, 1],
             'row': 0, 'column': 0},
-    title={'text': "No of years "},
+    title={'text': "Years until breakeven"},
     gauge={'bar': {'color': "#f98435"}  # Change the color here
     }))
 
@@ -67,6 +78,7 @@ years_profit_df = pd.DataFrame({'Years': years_list, 'Profit': profit_values})
 years_profit_df['Profit'] = [round(x, -2) if abs(x) > 1000 else x for x in profit_values]
 
 main_fig = px.bar(years_profit_df, x='Years', y='Profit', title='Return of Investment', hover_data={'Profit':':.2f'})
+main_fig.update_layout(title_x=0.5, title_font=dict(size=24))  # You can adjust the size (24 in this example) as needed
 main_fig.update_layout(plot_bgcolor="#11293D")
 
 # Create Dropdowns for the second graph
@@ -159,6 +171,10 @@ def update_output(selected_city, selected_package, selected_angle, selected_dire
     years_profit_df['Profit'] = [round(x, -2) if abs(x) > 1000 else x for x in profit_values]
 
     main_fig = px.bar(years_profit_df, x='Years', y='Profit', title='Return of Investment')
+    main_fig.update_layout(title_x=0.05, title_font=dict(size=24),  # Adjust the size as needed
+                      xaxis=dict(title_font=dict(size=20)),  # Adjust the size for x-axis title
+                      yaxis=dict(title_font=dict(size=20))  # Adjust the size for y-axis title
+                      )
     main_fig.update_layout(yaxis_title="Profitability (SEK)", xaxis_title="",plot_bgcolor="#11293D")
 
     # update the numerical figure
@@ -167,10 +183,14 @@ def update_output(selected_city, selected_package, selected_angle, selected_dire
     value=calc_years_until_breakeven(years_list, profit_values),
     domain={'x': [0, 1], 'y': [0, 1],
             'row': 0, 'column': 0},
-    title={'text': "Years until breakeven"},
+    # title={'text': "Years until breakeven"},
     gauge={'bar': {'color': "#f98435"},
             'axis': {'range': [0, 30]}  # Change the color here
     }))
+    fig.update_layout(
+    title=dict(text="Years until breakeven", font=dict(size=24)),  # Adjust the size (30 in this example) as needed
+    plot_bgcolor="#11293D"
+    )
     
     return main_fig, fig
 
@@ -186,11 +206,11 @@ app.layout = dbc.Container(fluid=True, children=[
                         # Center the dropdown menu in the middle of the Dash app
                         dbc.Row(
                             dbc.Col([
-                                html.H2('Solar Panels: Return on Invested Capital', style={'font-size': '34px', 'font-weight': 'bold', 'text-align': 'center', 'margin-bottom': '20px'}),
+                                html.H1('Solar Panels: Return on Invested Capital', style={'font-size': '54px', 'font-weight': 'bold', 'text-align': 'center', 'margin-bottom': '20px'}),
                                 dropdown_row,
                                 
                             ],
-                                width=8,
+                                width=7,
                                 className="mb-3",
                                 style={"margin-top": "40px"}
                             ),
@@ -199,7 +219,7 @@ app.layout = dbc.Container(fluid=True, children=[
                         ),
                         dbc.Row(
                             [
-                                dbc.Col(dcc.Graph(id='line-chart', figure=main_fig), lg=6),
+                                dbc.Col(dcc.Graph(id='line-chart', figure=main_fig), lg=6 ),
                                 dbc.Col(dcc.Graph(id='circle-with-number', figure=fig), lg=6),
                                 
                             ],
