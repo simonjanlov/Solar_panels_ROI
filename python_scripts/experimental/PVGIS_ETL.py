@@ -2,10 +2,14 @@ import pandas as pd
 import io
 
 from PVGIS_API_request import get_pvgis_data
+from city_to_lat_lon import city_to_lat_lon
 
 
-def coordinates_to_insolation_mean(lat, lon):
+def coordinates_to_insolation_mean(city_name):
     
+    # convert city name to coordinates
+    lat, lon = city_to_lat_lon(city_name)
+
     # call API and save csv data in buffer
     data = get_pvgis_data(lat, lon)
     buffer = io.StringIO(data)
@@ -23,7 +27,6 @@ def coordinates_to_insolation_mean(lat, lon):
 
 
 if __name__=='__main__':
+    
 
-    lat = '56.855'
-    lon = '12.691'
-    print(coordinates_to_insolation_mean(lat, lon))
+    print(coordinates_to_insolation_mean('Göteborg'))
