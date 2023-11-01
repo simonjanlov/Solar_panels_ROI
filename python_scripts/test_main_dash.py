@@ -6,12 +6,12 @@ import pandas as pd
 from dash_bootstrap_templates import load_figure_template
 import os 
 # Import class and functions
-from .electricity_output_calc import SolarPanelSystem
-from .find_tilt_and_direction_value import find_tilt_and_direction_value
-from .calc_years_until_breakeven import calc_years_until_breakeven
+from electricity_output_calc import SolarPanelSystem
+from find_tilt_and_direction_value import find_tilt_and_direction_value
+from calc_years_until_breakeven import calc_years_until_breakeven
 
 # Import the data for cities and solar packages
-from .data_dicts import packages_dict, cities_dict, years_list
+from data_dicts import packages_dict, cities_dict, years_list
 
 
 # Load the "superhero" themed figure template from dash-bootstrap-templates library,
@@ -22,13 +22,8 @@ load_figure_template("superhero")
 app = Dash(__name__, external_stylesheets=[dbc.themes.SUPERHERO])
 server = app.server
 # Load the price prognoses data
-# Determine the directory of your current script
-current_dir = os.path.dirname(os.path.realpath(__file__ if '__file__' in globals() else sys.executable))
-data_dir = os.path.join(current_dir, "data")  # Define the data directory path
-
-# Use absolute paths to load CSV files
-price_prognoses_data = pd.read_csv(os.path.join(data_dir, 'predicted_prices_withzones.csv'))
-data = pd.read_csv(os.path.join(data_dir, 'Electricity generation by source - Sweden.csv'))
+price_prognoses_data = pd.read_csv(r'data\predicted_prices_withzones.csv')
+data = pd.read_csv(r'data\Electricity generation by source - Sweden.csv')
 df = pd.DataFrame(data)
 df.drop(columns=['Unnamed: 0'], inplace=True)
 sums = df.sum()
