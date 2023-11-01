@@ -22,8 +22,8 @@ load_figure_template("superhero")
 app = Dash(__name__, external_stylesheets=[dbc.themes.SUPERHERO])
 
 # Load the price prognoses data
-price_prognoses_data = pd.read_csv(r'data\predicted_prices_withzones.csv')
-data = pd.read_csv(r'data\Electricity generation by source - Sweden.csv')
+price_prognoses_data = pd.read_csv(r'dash-app\data\predicted_prices_withzones.csv')
+data = pd.read_csv(r'dash-app\data\Electricity generation by source - Sweden.csv')
 df = pd.DataFrame(data)
 df.drop(columns=['Unnamed: 0'], inplace=True)
 sums = df.sum()

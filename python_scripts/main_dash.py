@@ -21,7 +21,7 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.VAPOR])
 
 
 # Load the price prognoses data
-price_prognoses_data = pd.read_csv(r'data\predicted_prices.csv')
+price_prognoses_data = pd.read_csv(r'dash-app\data\predicted_prices.csv')
 
 prognoses_fig = px.line(price_prognoses_data, x='Year', y='Predicted kWh price', title='Price Prognoses')
 
