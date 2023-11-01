@@ -1,4 +1,4 @@
-OpenWeather_API_KEY = 'PUT YOUR API KEY HERE'
+OpenWeather_API_KEY = 'YOUR API KEY GOES HERE'
 
 price_prognosis_csvpath = r'data\predicted_prices_withzones.csv' # test_main_dash2.py
 electicity_generation_by_source_csvpath = r'data\Electricity generation by source - Sweden.csv' # test_main_dash2.py
