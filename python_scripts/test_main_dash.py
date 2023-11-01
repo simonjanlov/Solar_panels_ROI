@@ -20,7 +20,7 @@ load_figure_template("superhero")
 
 # Create a Dash app with Bootstrap "superhero" theme
 app = Dash(__name__, external_stylesheets=[dbc.themes.SUPERHERO])
-
+server = app.server
 # Load the price prognoses data
 price_prognoses_data = pd.read_csv(r'final_project\data\predicted_prices_withzones.csv')
 data = pd.read_csv(r'final_project\data\Electricity generation by source - Sweden.csv')
