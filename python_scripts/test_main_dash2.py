@@ -147,10 +147,6 @@ direction_dropdown = dcc.Dropdown(
     style={'color': 'black', 'width': '100%'}  # Apply Bootstrap classes
 )
 dropdown_row = dbc.Row([
-    # dbc.Col([
-    #     html.Label("Select City"),
-    #     city_textbox,
-    # ], width=3),  # Adjust the width as needed
     
     dbc.Col([
         html.Label("Select Electricity Price Zone"),
@@ -173,18 +169,6 @@ dropdown_row = dbc.Row([
     ], width=3),  # Adjust the width as needed
 ], className="mb-3")
 
-
-# @app.callback(
-#         Output('text-output', 'children'),
-#         State("city-textbox", "value"),
-#         Input("city-textbox", "n_submit")
-# )
-
-# def print_city(city, n_submit):
-#     if n_submit is None:
-#         return "Type something and press Enter."
-#     else:
-#         return f"You pressed Enter. You typed: {city}"
 
 @app.callback(
         Output('text-output', 'children'),
