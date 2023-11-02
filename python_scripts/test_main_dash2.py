@@ -81,6 +81,7 @@ fig = go.Figure(go.Indicator(
 
 # Create the graph for the profitability
 insolation_mean = 950
+
 tilt_and_direction = find_tilt_and_direction_value(20, '225 SV')
 my_system = SolarPanelSystem(system_cost=packages_dict['12 solar panels']['system_cost'],
                              system_effect_kWp=packages_dict['12 solar panels']['system_effect'],
@@ -101,6 +102,7 @@ city_textbox = dcc.Input(
     id='city-textbox',
     type='text',
     placeholder='Input City',
+    value='Kiruna',
     className='mb-3',
     style={'color': 'black', 'width': '100%'}
 )
@@ -186,6 +188,7 @@ dropdown_row = dbc.Row([
 
 @app.callback(
         Output('text-output', 'children'),
+        Output('text-output-insolation', 'children'),
         State("city-textbox", "value"),
         Input("city-textbox", "n_submit")
 )
@@ -193,6 +196,10 @@ dropdown_row = dbc.Row([
 def print_city(city, n_submit):
     global insolation_mean
     insolation_mean = coordinates_to_insolation_mean(city)
+    
+    insolation_string = f"Avg insolation: {insolation_mean:.1f}"
+
+    return None, insolation_string
 
     # if n_submit is None:
     #     return "Type something and press Enter."
@@ -294,6 +301,11 @@ app.layout = dbc.Container(fluid=True, children=[
                         dbc.Row(
                             dbc.Col(centered_city_input_row, width=7),
                             className="justify-content-center",
+                        ),
+                        dbc.Row(
+                            dbc.Col(html.Div(id="text-output-insolation"),
+                            className="justify-content-center")
+
                         ),
                         dbc.Row(
                             [
