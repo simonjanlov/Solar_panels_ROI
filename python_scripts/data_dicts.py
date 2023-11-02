@@ -4,7 +4,7 @@ from pathlib import Path
 
 sys.path.append(str(Path('.').absolute().parent) + '\\final_project')
 
-from config import *
+from config2 import *
 
 
 packages_dict = {

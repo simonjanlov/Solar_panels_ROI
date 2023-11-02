@@ -19,7 +19,7 @@ def get_pvgis_data(lat, lon):
     # location given here
     # lat = '56.855'
     # lon = '12.691'
-    raddatabase = "PVGIS-SARAH"
+    raddatabase = "PVGIS-COSMO"
     horirrad = '1'
     
     # defining a params dict for the parameters to be sent to the API
