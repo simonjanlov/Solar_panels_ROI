@@ -41,10 +41,10 @@ data = pd.read_csv(electicity_generation_by_source_csvpath)
 df = pd.DataFrame(data)
 df.drop(columns=['Unnamed: 0'], inplace=True)
 sums = df.sum()
-fig1 = px.pie(names=sums.index, values=sums.values, title='Energy source destribution in Sweden')
+fig1 = px.pie(names=sums.index, values=sums.values)
 fig1.update_traces(pull=[0,0,0,0,0,0,0,0,0.2])
 fig1.update_layout(
-    title='Energy source distribution in Sweden',
+    # title='Energy source distribution in Sweden',
     title_font=dict(size=24),  # Adjust the size (30 in this example) as needed
     plot_bgcolor="#11293D"
 )
@@ -52,15 +52,15 @@ fig1.update_layout(
 # Create the line graph for the price predictions
 prognoses_fig = px.line(price_prognoses_data, 
                         x='Year', 
-                        y=['Predicted kWh price', 'zone1', 'zone2', 'zone3', 'zone4'], 
-                        title='Price Forecast (per electricity zone)')
+                        y=['Predicted kWh price', 'zone1', 'zone2', 'zone3', 'zone4'] 
+                        )
 prognoses_fig.update_traces(name="zone 1", selector=dict(name="zone1"))
 prognoses_fig.update_traces(name="zone 2", selector=dict(name="zone2"))
 prognoses_fig.update_traces(name="zone 3", selector=dict(name="zone3"))
 prognoses_fig.update_traces(name="zone 4", selector=dict(name="zone4"))
 # Update the size of the title in the line graph
 prognoses_fig.update_layout(
-    title_text='Price Forecast (per electricity zone)',
+    # title_text='Price Forecast (per electricity zone)',
     title_font=dict(size=24),  # Adjust the size (30 in this example) as needed
     legend=dict(orientation="h", y=-0.2, x=0.5, xanchor="center"),
     yaxis_title="predicted price (SEK/kWh)",
@@ -75,13 +75,12 @@ fig = go.Figure(go.Indicator(
     value=15,
     domain={'x': [0, 1], 'y': [0, 1],
             'row': 0, 'column': 0},
-    title={'text': "Years until breakeven"},
+    # title={'text': "Years until breakeven"},
     gauge={'bar': {'color': "#f98435"}  # Change the color here
     }))
 
 # Create the graph for the profitability
 insolation_mean = 950
-
 tilt_and_direction = find_tilt_and_direction_value(20, '225 SV')
 my_system = SolarPanelSystem(system_cost=packages_dict['12 solar panels']['system_cost'],
                              system_effect_kWp=packages_dict['12 solar panels']['system_effect'],
@@ -93,7 +92,7 @@ years_profit_df = pd.DataFrame({'Years': years_list, 'Profit': profit_values})
 # round the values for hover output purposes (round -3 means even thousands, round -2 will give one "decimal")
 years_profit_df['Profit'] = [round(x, -2) if abs(x) > 1000 else x for x in profit_values]
 
-main_fig = px.bar(years_profit_df, x='Years', y='Profit', title='Return of Investment', hover_data={'Profit':':.2f'})
+main_fig = px.bar(years_profit_df, x='Years', y='Profit', hover_data={'Profit':':.2f'})
 main_fig.update_layout(title_x=0.5, title_font=dict(size=24))  # You can adjust the size (24 in this example) as needed
 main_fig.update_layout(plot_bgcolor="#11293D")
 
@@ -112,18 +111,21 @@ insolation_response_div = html.Div(id="text-output-insolation", style={'font-siz
                                                                        'color': 'grey',
                                                                        'margin-top': '0px',
                                                                        'text-align': 'center'})
-
-
 centered_city_input_row = dbc.Row(
-    dbc.Col([
-        html.Label("Enter City"),
-        city_textbox,
-        insolation_response_div,
-    ], width={"size": 4, "offset": 4}),
-    justify="left",
-    align="center",
-    className="mb-3",
+    dbc.Col(
+        [
+            html.Label("Enter City"),
+            city_textbox,
+            insolation_response_div,
+        ],
+        lg=4, md=6, sm=8, xs=12,  # Specify different widths for different screen sizes
+        className="mb-3",
+    ),
+    justify="center",  # Center the row contents horizontally
+    align="center",    # Center the row contents vertically
 )
+
+
 # Create Dropdowns for the second graph
 pricezone_dropdown = dcc.Dropdown(
     id='pricezone-dropdown',
@@ -156,28 +158,44 @@ direction_dropdown = dcc.Dropdown(
     style={'color': 'black', 'width': '100%'}  # Apply Bootstrap classes
 )
 dropdown_row = dbc.Row([
+    # dbc.Col([
+    #     html.Label("Select City"),
+    #     city_textbox,
+    # ], width=3),  # Adjust the width as needed
     
     dbc.Col([
         html.Label("Select Electricity Price Zone"),
         pricezone_dropdown,
-    ], width=3),  # Adjust the width as needed
+    ], width=3,lg=3, md=3, sm=6, xs=12),  # Adjust the width as needed
 
     dbc.Col([
         html.Label("Select Package"),
         package_dropdown,
-    ], width=3),  # Adjust the width as needed
+    ], width=3,lg=3, md=3, sm=6, xs=12),  # Adjust the width as needed
 
     dbc.Col([
         html.Label("Select Tilt"),
         angle_dropdown,
-    ], width=3),  # Adjust the width as needed
+    ], width=3,lg=3, md=3, sm=6, xs=12),  # Adjust the width as needed
 
     dbc.Col([
         html.Label("Select Direction"),
         direction_dropdown,
-    ], width=3),  # Adjust the width as needed
+    ], width=3,lg=3, md=3, sm=6, xs=12),  # Adjust the width as needed
 ], className="mb-3")
 
+
+# @app.callback(
+#         Output('text-output', 'children'),
+#         State("city-textbox", "value"),
+#         Input("city-textbox", "n_submit")
+# )
+
+# def print_city(city, n_submit):
+#     if n_submit is None:
+#         return "Type something and press Enter."
+#     else:
+#         return f"You pressed Enter. You typed: {city}"
 
 @app.callback(
         Output('text-output', 'children'),
@@ -193,6 +211,7 @@ def print_city(city, n_submit):
     insolation_string = f"Avg insolation: {insolation_mean:.1f}"
 
     return None, insolation_string
+
 
     # if n_submit is None:
     #     return "Type something and press Enter."
@@ -247,7 +266,7 @@ def update_output(selected_zone, selected_package, selected_angle, selected_dire
     # round the values for hover output purposes (round -3 means even thousands, round -2 will give one "decimal")
     years_profit_df['Profit'] = [round(x, -2) if abs(x) > 1000 else x for x in profit_values]
 
-    main_fig = px.bar(years_profit_df, x='Years', y='Profit', title='Return of Investment')
+    main_fig = px.bar(years_profit_df, x='Years', y='Profit')
     main_fig.update_layout(title_x=0.05, title_font=dict(size=24),  # Adjust the size as needed
                       xaxis=dict(title_font=dict(size=20)),  # Adjust the size for x-axis title
                       yaxis=dict(title_font=dict(size=20))  # Adjust the size for y-axis title
@@ -265,7 +284,7 @@ def update_output(selected_zone, selected_package, selected_angle, selected_dire
             'axis': {'range': [0, 30]}  # Change the color here
     }))
     fig.update_layout(
-    title=dict(text="Years until breakeven", font=dict(size=24)),  # Adjust the size (30 in this example) as needed
+    # title=dict(text="Years until breakeven", font=dict(size=24)),  # Adjust the size (30 in this example) as needed
     plot_bgcolor="#11293D"
     )
     
@@ -286,6 +305,7 @@ app.layout = dbc.Container(fluid=True, children=[
                             ],
                                 width=7,
                                 className="mb-3",
+                                lg=7, md=10, sm=12, xs=12,
                                 style={"margin-top": "40px"}
                             ),
                             className="justify-content-center",
@@ -295,9 +315,9 @@ app.layout = dbc.Container(fluid=True, children=[
                             dbc.Col(centered_city_input_row, width=7),
                             className="justify-content-center",
                         ),
-                        # dbc.Row(
-                        #     dbc.Col(html.Div(id="text-output-insolation"),
-                        #     className="justify-content-center")
+                        # # dbc.Row(
+                        # #     dbc.Col(html.Div(id="text-output-insolation"),
+                        # #     className="justify-content-center")
 
                         # ),
                         dbc.Row(
@@ -306,19 +326,31 @@ app.layout = dbc.Container(fluid=True, children=[
                             ],
                             className="justify-content-center",
                         ),
-                        dbc.Row(
-                            [
-                                dbc.Col(dcc.Graph(id='line-chart', figure=main_fig), lg=6),
-                                dbc.Col(dcc.Graph(id='circle-with-number', figure=fig), lg=6),
-                            ],
-                            className="mt-4",
+                       dbc.Row(
+            [
+                dbc.Col([
+                    html.H2("Return of investment", style={'font-size': '30px', 'font-weight': 'bold', 'text-align': 'center'}),
+                    dcc.Graph(id='line-chart', figure=main_fig, style={'width': '100%'}),
+                ], lg=6, xs=12),  # lg=6 for normal displays, xs=12 for mobile displays
+                dbc.Col([
+                    html.H2("Years until breakeven", style={'font-size': '30px', 'font-weight': 'bold', 'text-align': 'center', 'margin-bottom': '0px'}),
+                    dcc.Graph(id='circle-with-number', figure=fig, style={'width': '100%'}),
+                ], lg=6, xs=12),
+            ],
+            className="mt-5",
                         ),
-                        dbc.Row(
-                            [
-                                dbc.Col(dcc.Graph(figure=fig1), lg=6),
-                                dbc.Col(dcc.Graph(figure=prognoses_fig), lg=6),
-                            ],
-                            className="mt-4",
+                         dbc.Row(
+            [
+                dbc.Col([
+                    html.H2("Energy source distribution in Sweden", style={'font-size': '30px', 'font-weight': 'bold', 'text-align': 'center'}),
+                    dcc.Graph(figure=fig1, style={'width': '100%'}),
+                ], lg=6, xs=12),
+                dbc.Col([
+                    html.H2("Price forecast (per electricity zone)", style={'font-size': '30px', 'font-weight': 'bold', 'text-align': 'center'}),
+                    dcc.Graph(figure=prognoses_fig, style={'width': '100%'}),
+                ], lg=6, xs=12),
+            ],
+            className="mt-5",
                         ),
                     ],
                 )),
@@ -327,7 +359,6 @@ app.layout = dbc.Container(fluid=True, children=[
         html.Div(id="text-output"),
     ]),
 ])
-
 
 if __name__ == "__main__":
     app.run_server(debug=True)
