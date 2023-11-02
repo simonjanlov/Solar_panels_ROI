@@ -104,7 +104,15 @@ city_textbox = dcc.Input(
     className='mb-3',
     style={'color': 'black', 'width': '100%'}
 )
-
+centered_city_input_row = dbc.Row(
+    dbc.Col([
+        html.Label("Enter City"),
+        city_textbox,
+    ], width={"size": 4, "offset": 4}),
+    justify="left",
+    align="center",
+    className="mb-3",
+)
 # Create Dropdowns for the second graph
 pricezone_dropdown = dcc.Dropdown(
     id='pricezone-dropdown',
@@ -137,10 +145,10 @@ direction_dropdown = dcc.Dropdown(
     style={'color': 'black', 'width': '100%'}  # Apply Bootstrap classes
 )
 dropdown_row = dbc.Row([
-    dbc.Col([
-        html.Label("Select City"),
-        city_textbox,
-    ], width=3),  # Adjust the width as needed
+    # dbc.Col([
+    #     html.Label("Select City"),
+    #     city_textbox,
+    # ], width=3),  # Adjust the width as needed
     
     dbc.Col([
         html.Label("Select Electricity Price Zone"),
@@ -272,32 +280,38 @@ app.layout = dbc.Container(fluid=True, children=[
             [
                 dbc.Col(dcc.Loading(
                     [
-                        # Center the dropdown menu in the middle of the Dash app
                         dbc.Row(
                             dbc.Col([
                                 html.H1('Solar Panels: Return on Invested Capital', style={'font-size': '54px', 'font-weight': 'bold', 'text-align': 'center', 'margin-bottom': '20px'}),
-                                dropdown_row,
-                                
                             ],
                                 width=7,
                                 className="mb-3",
                                 style={"margin-top": "40px"}
                             ),
-                            # Add justify-content-center to center the content
+                            className="justify-content-center",
+                        ),
+                        # Add the new row to center the city input row
+                        dbc.Row(
+                            dbc.Col(centered_city_input_row, width=7),
                             className="justify-content-center",
                         ),
                         dbc.Row(
                             [
-                                dbc.Col(dcc.Graph(id='line-chart', figure=main_fig), lg=6 ),
+                                dbc.Col(dropdown_row, width=7),
+                            ],
+                            className="justify-content-center",
+                        ),
+                        dbc.Row(
+                            [
+                                dbc.Col(dcc.Graph(id='line-chart', figure=main_fig), lg=6),
                                 dbc.Col(dcc.Graph(id='circle-with-number', figure=fig), lg=6),
-                                
                             ],
                             className="mt-4",
                         ),
                         dbc.Row(
                             [
                                 dbc.Col(dcc.Graph(figure=fig1), lg=6),
-                                dbc.Col(dcc.Graph(figure=prognoses_fig), lg=6)
+                                dbc.Col(dcc.Graph(figure=prognoses_fig), lg=6),
                             ],
                             className="mt-4",
                         ),

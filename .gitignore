@@ -1,6 +1,8 @@
 config.py
 config2.py
 
+config2.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
