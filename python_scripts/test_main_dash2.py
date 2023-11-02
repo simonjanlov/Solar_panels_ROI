@@ -106,10 +106,19 @@ city_textbox = dcc.Input(
     className='mb-3',
     style={'color': 'black', 'width': '100%'}
 )
+
+# Create text div under textbox
+insolation_response_div = html.Div(id="text-output-insolation", style={'font-size': '14px',
+                                                                       'color': 'grey',
+                                                                       'margin-top': '0px',
+                                                                       'text-align': 'center'})
+
+
 centered_city_input_row = dbc.Row(
     dbc.Col([
         html.Label("Enter City"),
         city_textbox,
+        insolation_response_div,
     ], width={"size": 4, "offset": 4}),
     justify="left",
     align="center",
@@ -286,11 +295,11 @@ app.layout = dbc.Container(fluid=True, children=[
                             dbc.Col(centered_city_input_row, width=7),
                             className="justify-content-center",
                         ),
-                        dbc.Row(
-                            dbc.Col(html.Div(id="text-output-insolation"),
-                            className="justify-content-center")
+                        # dbc.Row(
+                        #     dbc.Col(html.Div(id="text-output-insolation"),
+                        #     className="justify-content-center")
 
-                        ),
+                        # ),
                         dbc.Row(
                             [
                                 dbc.Col(dropdown_row, width=7),
