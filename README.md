@@ -1,6 +1,8 @@
-# Project Title
+# Solar Panels: Return On Ivested Capital
 
-One or two sentences describing your project.
+Graduation project at the Data Engineer program at Brights / Academic Work Academy.
+
+By: Simon Janlöv, Khaqan Yousaf, Daniella Barrera Pacheco, Henry Apler
 
 ## Table of Contents
 
