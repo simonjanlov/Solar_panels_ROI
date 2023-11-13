@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 import pandas as pd
 from dash_bootstrap_templates import load_figure_template
 
-sys.path.append(str(Path('.').absolute().parent) + '\\final_project')
+sys.path.append(str(Path('.').absolute().parent) + '\\Solar_panels_ROI')
 
 from config2 import *
 
