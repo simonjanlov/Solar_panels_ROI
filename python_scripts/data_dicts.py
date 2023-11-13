@@ -2,7 +2,7 @@ import pandas as pd
 import sys
 from pathlib import Path
 
-sys.path.append(str(Path('.').absolute().parent) + '\\final_project')
+sys.path.append(str(Path('.').absolute().parent) + '\\Solar_panels_ROI')
 
 from config2 import *
 
