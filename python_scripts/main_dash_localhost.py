@@ -185,18 +185,7 @@ dropdown_row = dbc.Row([
 ], className="mb-3")
 
 
-# @app.callback(
-#         Output('text-output', 'children'),
-#         State("city-textbox", "value"),
-#         Input("city-textbox", "n_submit")
-# )
-
-# def print_city(city, n_submit):
-#     if n_submit is None:
-#         return "Type something and press Enter."
-#     else:
-#         return f"You pressed Enter. You typed: {city}"
-
+# Callback for city text input
 @app.callback(
         Output('text-output', 'children'),
         Output('text-output-insolation', 'children'),
@@ -213,14 +202,8 @@ def print_city(city, n_submit):
     return None, insolation_string
 
 
-    # if n_submit is None:
-    #     return "Type something and press Enter."
-    # else:
-    #     insolation_mean = coordinates_to_insolation_mean(city)
-        # return f"You pressed Enter. {city} has an insolation mean of {round(insolation_mean, 2)}"
 
-
-# Create a callback for updating the chart
+# Callback for updating the chart
 @app.callback(
     [Output('line-chart', 'figure'),
      Output('circle-with-number', 'figure')],
